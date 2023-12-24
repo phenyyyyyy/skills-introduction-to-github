@@ -27,7 +27,7 @@ class Ball extends Shape {
     this.radious = radious;
     this.color =color;
   }
-  darw(){
+  draw(){
     ctx.beginPath();
     ctx.arc(this.x,this.y,this.radious,0,Math.PI*2,);
     ctx.closePath();
@@ -101,10 +101,10 @@ function randomColor() {
 function loop() {
   ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
   ctx.fillRect(0, 0, width, height);
- for(let i=0;i<ballarr.length;i++){
-   ballarr[i].darw();
-   ballarr[i].updated();
- }
+  ballarr.forEach(element => {
+    element.draw();
+    element.updated();
+  });
  window.requestAnimationFrame(loop);
 }
 

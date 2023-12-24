@@ -44,8 +44,8 @@ class Ball extends Shape {
     if(this.y+this.radious>width){
       this.vy = -this.vy;
     }
-    if(this.x+this.radious<=0){
-      this.vx = -this.vx;
+    if(this.y-this.radious<=0){
+      this.vy = -this.vy;
     }
     
   this.x += this.vx;
@@ -61,20 +61,7 @@ const shape = new Shape("60", "100","3","3");
 shape.introduceShape();
 const ballarr = [];
 
-// for (i=0;i<2;i++){
-// ballarr[i] += "ball" +i
-// console.log(i,ballarr[i])
-// }
-
-// ballarr.forEach(element => {
-//   element = new Ball(random(10,1000),random(10,1000),random(-7,7),random(-7,7),random(10,50),randomColor());
-//   console.log(element)
-//   element.darw()
-//   element.introduceShape()
- 
-// });
-
-//让计算机给我画10个随机颜色的球
+//让计算机给我画25个随机颜色的球
 while(ballarr.length<25){
   let size = random(10, 20);
   let ball = new Ball(
@@ -87,7 +74,7 @@ while(ballarr.length<25){
     randomColor(),
   );
   ballarr.push(ball);
-  console.log(ballarr.push(ball));
+  console.log(ballarr);
 }
 
 // 生成随机数的函数

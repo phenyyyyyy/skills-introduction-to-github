@@ -7,19 +7,23 @@ const height = (canvas.height = window.innerHeight);
 class Shape {
   x;
   y;
-  constructor(x, y) {
+  vx;
+  vy;
+  constructor(x, y,vx,vy) {
     this.x = x;
     this.y = y;
+    this.vx = vx;
+    this.vy = vy;
   }
   introduceShape() {
-    console.log(` this position is: (${this.x}, ${this.y} )`);
+    console.log(` this position is: (${this.x}, ${this.y} ),this moveLength is: (${this.vx}, ${this.vy}) `);
   }
 }
 
 class Ball extends Shape {
   radious;color;
-  constructor(x,y,radious,color){
-    super(x,y);
+  constructor(x,y,vx,vy,radious,color){
+    super(x,y,vx,vy);
     this.radious = radious;
     this.color =color;
   }
@@ -30,30 +34,61 @@ class Ball extends Shape {
     ctx.fillStyle = this.color;
     ctx.fill()
   }
+  updated() {
+    if(this.x+this.radious>width){
+      this.vx = -this.vx;
+    }
+    if(this.x-this.radious<=0){
+      this.vx = -this.vx;
+    }
+    if(this.y+this.radious>width){
+      this.vy = -this.vy;
+    }
+    if(this.x+this.radious<=0){
+      this.vx = -this.vx;
+    }
+    
+  this.x += this.vx;
+  this.y += this.vy;
+  }
   introduceShape() {
-    console.log(
-      ` this position is: (${this.x}, ${this.y} )`,
-    );
+    console.log(` this position is: (${this.x}, ${this.y} ),this moveLength is: (${this.vx}, ${this.vy}) `);
   }
 
 }
 
-const shape = new Shape("60", "100");
+const shape = new Shape("60", "100","3","3");
 shape.introduceShape();
 const ballarr = [];
 
-for (i=0;i<5;i++){
-ballarr[i] += "ball" +i
-console.log(i,ballarr[i])
+// for (i=0;i<2;i++){
+// ballarr[i] += "ball" +i
+// console.log(i,ballarr[i])
+// }
+
+// ballarr.forEach(element => {
+//   element = new Ball(random(10,1000),random(10,1000),random(-7,7),random(-7,7),random(10,50),randomColor());
+//   console.log(element)
+//   element.darw()
+//   element.introduceShape()
+ 
+// });
+
+//让计算机给我画10个随机颜色的球
+while(ballarr.length<25){
+  let size = random(10, 20);
+  let ball = new Ball(
+    // 为避免绘制错误，球至少离画布边缘球本身一倍宽度的距离
+    random(0 + size, width - size),
+    random(0 + size, height - size),
+    random(-7, 7),
+    random(-7, 7),
+    size,
+    randomColor(),
+  );
+  ballarr.push(ball);
+  console.log(ballarr.push(ball));
 }
-
-ballarr.forEach(element => {
-  element = new Ball(random(10,1000),random(10,1000),random(10,80),randomColor());
-  console.log(element)
-  element.darw()
-});
-
-
 
 // 生成随机数的函数
 
@@ -74,3 +109,16 @@ function randomColor() {
     ")"
   );
 }
+
+//绘制球形动画
+function loop() {
+  ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
+  ctx.fillRect(0, 0, width, height);
+ for(let i=0;i<ballarr.length;i++){
+   ballarr[i].darw();
+   ballarr[i].updated();
+ }
+ window.requestAnimationFrame(loop);
+}
+
+window.requestAnimationFrame(loop);
